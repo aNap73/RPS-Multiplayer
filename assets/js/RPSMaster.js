@@ -134,36 +134,55 @@ var antRPS = {
   YourPlayer: new antPlayer('NewPlayer'),
   YourGame: new antRPSGame(),
   Cycle: function () {
-    antRPS.UpdatePlayer(antRPS.YourPlayer);
-    antRPS.YourPlayer.bRequiresUpdate = true;
+
+    
+
     let d = new Date();
-    if(antRPS.YourGame.iGameState===3&&antRPS.YourGame.gotime>0&&(Math.abs(d.getTime() - antRPS.YourGame.gotime)>300)){
-      
-      antRPS.YourGame.bGameOver=false;
-      antRPS.YourGame.iGameState=0;
-      antRPS.YourGame.bRequiresUpdate = true;
-      antRPS.StartGame();
-    }
-    if(antRPS.YourGame.iGameState===0 &&antRPS.isRealPlayer(antRPS.YourGame.Player1)&&antRPS.isRealPlayer(antRPS.YourGame.Player2))
-    {
-      antRPS.YourGame.gotime=0;
-      antRPS.YourGame.iGameState=1;
-      antRPS.YourGame.bRequiresUpdate = true;
-    }
-    if(antRPS.isPlayerOld(antRPS.YourGame.Player1)){
-      
+    antRPS.UpdatePlayer(antRPS.YourPlayer);
+    
+    if(antRPS.YourGame.iGameState!==3&&antRPS.isPlayerOld(antRPS.YourGame.Player1)){      
       antRPS.YourGame.Player1.Weapon='TimeOut';
       antRPS.YourGame.Player2.Weapon='Persistance';
       antRPS.YourGame.iGameState=3;
-      antRPS.YourGame.bRequiresUpdate = true;
-     
+      antRPS.YourGame.bGameOver=true;
+      antRPS.YourGame.gotime=d.getTime();
+      antRPS.YourGame.winner= antRPS.YourGame.Player2;
+      antRPS.YourGame.loser= antRPS.YourGame.Player1;
+      antRPS.YourGame.bRequiresUpdate = true;     
     }
-    if(antRPS.isPlayerOld(antRPS.YourGame.Player2)){
+    if(antRPS.YourGame.iGameState!==3&&antRPS.isPlayerOld(antRPS.YourGame.Player2)){
       antRPS.YourGame.Player2.Weapon='TimeOut';
       antRPS.YourGame.Player1.Weapon='Persistance';
       antRPS.YourGame.iGameState=3;
+      antRPS.YourGame.bGameOver=true;
+      antRPS.YourGame.gotime=d.getTime();
+      antRPS.YourGame.winner= antRPS.YourGame.Player1;
+      antRPS.YourGame.loser= antRPS.YourGame.Player2;
       antRPS.YourGame.bRequiresUpdate = true;
     }
+    if(antRPS.YourGame.iGameState===3&&antRPS.YourGame.gotime===0)
+    {    
+      antRPS.YourGame.gotime=d.getTime();
+      antRPS.YourGame.bRequiresUpdate = true;
+    }else if(antRPS.YourGame.iGameState===3&&(Math.abs(d.getTime() - antRPS.YourGame.gotime)>5000))
+    {      
+      antRPS.YourGame.iGameState=0;
+      antRPS.YourGame.gotime=0;
+      
+      antRPS.StartGame();
+      antRPS.UpdateData();
+      antRPS.DisplayView();
+      return;
+         
+    } else if(antRPS.YourGame.iGameState===0&&antRPS.isRealPlayer(antRPS.YourGame.Player1)&&antRPS.isRealPlayer(antRPS.YourGame.Player2))
+    { 
+           
+      antRPS.YourGame.iGameState=1;      
+      antRPS.UpdateData();
+      antRPS.DisplayView();
+      return;
+    } 
+    
     
     if (antRPS.YourPlayer.bRequiresUpdate) {
       if (antRPS.isInGame(antRPS.YourPlayer)) {
@@ -212,7 +231,7 @@ var antRPS = {
   },
   StartGame: function () {
     console.log('Start');
-   
+    let d = new Date();
     if(antRPS.YourGame.winner.id===antRPS.YourPlayer.id){
       if(antRPS.YourPlayer.FieldSide==='Player1'){
         antRPS.YourGame.Player2 = new antPlayer('Player2');
@@ -224,10 +243,10 @@ var antRPS = {
       antRPS.YourPlayer.Weapon = "none";
       antRPS.YourGame.winner = "none";
       antRPS.YourGame.loser = "none";
-      antRPS.YourGame.bRequiresUpdate=true;
+      antRPS.UpdateData();
        
     }
-    let d = new Date();
+    
     
     
     
@@ -241,7 +260,7 @@ var antRPS = {
 
 
 
-      bStart = false;
+      antRPS.bStart = false;
       $('#Join').on('click', function (e) {
         antRPS.JoinGame();
       });
@@ -275,7 +294,6 @@ var antRPS = {
         antRPS.YourGame.iGameState = 3;
         antRPS.YourPlayer.Weapon = "Rock";
         antRPS.YourPlayer.bRequiresUpdate = true;
-
         antRPS.YourGame.bRequiresUpdate = true;
       });
       $('#Paper1').on('click', function (e) {
@@ -288,7 +306,7 @@ var antRPS = {
       });
       $('#Paper2').on('click', function (e) {
         antRPS.YourGame.iGameState = 3;
-        antRPS.YourPlayer.Weapon = "Paper";
+        antRPS.YourPlayer.Weapon = "Paper";        
         antRPS.YourPlayer.bRequiresUpdate = true;
         antRPS.YourGame.bRequiresUpdate = true;
       });
@@ -300,7 +318,7 @@ var antRPS = {
       });
       $('#Scissor2').on('click', function (e) {
         antRPS.YourPlayer.Weapon = "Scissor";
-        antRPS.YourGame.iGameState = 3;
+        antRPS.YourGame.iGameState = 3;        
         antRPS.YourPlayer.bRequiresUpdate = true;
         antRPS.YourGame.bRequiresUpdate = true;
       });
@@ -325,7 +343,8 @@ var antRPS = {
     }
     $('#Arena').empty();
     switch (antRPS.YourGame.iGameState) {
-      case 0:               
+      case 0:
+                     
         break;
       case 1:
         //Set Player1 Turn
@@ -388,10 +407,11 @@ var antRPS = {
     if (antRPS.YourGame.Player1.Weapon === antRPS.YourGame.Player2.Weapon) {
       if (!antRPS.YourGame.bGameOver) {
       if(antRPS.YourPlayer.FieldSide!=='none'){
-        antRPS.YourGame.bGameOver=true;
+        antRPS.YourGame.bGameOver=true;       
+        antRPS.YourPlayer.Games=+1;
         antRPS.YourPlayer.bRequiresUpdate = true;
         antRPS.YourGame.bRequiresUpdate = true;
-        antRPS.YourPlayer.Games=+1;        
+                
         return 'The Game was a Tie!';
       }
       
@@ -424,6 +444,8 @@ var antRPS = {
   },
   HandleWinLoss: function (winner, loser) {
     if (!antRPS.YourGame.bGameOver) {
+      antRPS.YourGame.bGameOver=true;
+      antRPS.YourGame.bRequiresUpdate=true;
       if (antRPS.YourPlayer.id === winner.id) {
         antRPS.YourPlayer.Wins += 1;
         antRPS.YourPlayer.Games += 1;
@@ -446,7 +468,7 @@ var antRPS = {
         antRPS.YourPlayer.Games += 1;
         antRPS.YourPlayer.FieldSide = 'none';
       }
-      antRPS.YourGame.bGameOver = false;
+      antRPS.YourGame.bGameOver = false;  
       antRPS.YourGame.bRequiresUpdate=true;
     }
     

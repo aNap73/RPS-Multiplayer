@@ -138,15 +138,15 @@ var antRPS = {
     antRPS.YourPlayer.bRequiresUpdate = true;
     let d = new Date();
     if(antRPS.YourGame.iGameState===3&&antRPS.YourGame.gotime>0&&(Math.abs(d.getTime() - antRPS.YourGame.gotime)>300)){
-      antRPS.YourGame.gotime=0;
+      
       antRPS.YourGame.bGameOver=false;
       antRPS.YourGame.iGameState=0;
       antRPS.YourGame.bRequiresUpdate = true;
       antRPS.StartGame();
-      
     }
     if(antRPS.YourGame.iGameState===0 &&antRPS.isRealPlayer(antRPS.YourGame.Player1)&&antRPS.isRealPlayer(antRPS.YourGame.Player2))
     {
+      antRPS.YourGame.gotime=0;
       antRPS.YourGame.iGameState=1;
       antRPS.YourGame.bRequiresUpdate = true;
     }
@@ -325,8 +325,7 @@ var antRPS = {
     }
     $('#Arena').empty();
     switch (antRPS.YourGame.iGameState) {
-      case 0:
-
+      case 0:               
         break;
       case 1:
         //Set Player1 Turn
@@ -387,9 +386,17 @@ var antRPS = {
       
     };
     if (antRPS.YourGame.Player1.Weapon === antRPS.YourGame.Player2.Weapon) {
-      antRPS.YourPlayer.bRequiresUpdate = true;
-      antRPS.YourGame.bRequiresUpdate = true;
-      return 'The Game was a Tie!';
+      if (!antRPS.YourGame.bGameOver) {
+      if(antRPS.YourPlayer.FieldSide!=='none'){
+        antRPS.YourGame.bGameOver=true;
+        antRPS.YourPlayer.bRequiresUpdate = true;
+        antRPS.YourGame.bRequiresUpdate = true;
+        antRPS.YourPlayer.Games=+1;        
+        return 'The Game was a Tie!';
+      }
+      
+      
+    }
     }
     let slt = antRPS.YourGame.Player1.Weapon + ':' + antRPS.YourGame.Player2.Weapon;
     switch (slt) {

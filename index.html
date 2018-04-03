@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  
+  <title>RPS-Multiplayer</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Rock, Paper, Scissor</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ml-auto ">            
+            <li class="nav-item">
+              <a id="Join" class="nav-link" href="#">Join</a>
+            </li>
+            <li class="nav-item">
+              <a id="About" class="nav-link" href="#">About</a>
+            </li>
+            
+        </div>
+      </nav>
+<!-- <nav></nav> -->
+<div id="cont0" class='jumbotron'>
+
+<div>Enter Your Player Name:</div><input id="getName"></input><button id="Enter">[Enter]</button>
+</div>
+<div id="cont1" class='jumbotron center'>
+<div class="row">
+<div class="col-md-4"><div id="Player1Area" class='Area'>
+  <H2 id="Player1Name">Player 1</H2>
+  <div id="Player1contain">
+  <button id="Rock1">Rock</button><br>
+  <button id="Paper1">Paper</button><br>
+  <button id="Scissor1">Scissor</button>
+  </div>
+</div></div>
+
+<div class="col-md-4" ><H2>Arena</H2>
+  <div class='Arena' id='Arena'>  
+  
+  </div>
+</div>
+<div class="col-md-4"><div id="Player2Area" class='Area'>
+  <H2 id="Player2Name">Player 2</H2>
+  <div id="Player2contain">
+    <button id="Rock2">Rock</button><br>
+    <button id="Paper2">Paper</button><br>
+    <button id="Scissor2">Scissor</button>
+    </div>
+</div></div>
+</div>
+</div>
+  <!-- jQuery -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <!-- Bootstrap CDN-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+
+  <!-- Firebase Reference -->
+  <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
+  <script src="./assets/js/RPSMaster.js"></script>
+</body>
+
+</html>

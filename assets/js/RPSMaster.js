@@ -302,7 +302,8 @@ var antRPS = {
       });
       $('#Rock2').on('click', function (e) {
         antRPS.YourGame.iGameState = 3;
-        antRPS.YourPlayer.Weapon = "Rock";
+        antRPS.YourGame.bGameOver=true;
+        antRPS.YourPlayer.Weapon = "Rock";        
         antRPS.YourPlayer.bRequiresUpdate = true;
         antRPS.YourGame.bRequiresUpdate = true;
       });
@@ -316,6 +317,7 @@ var antRPS = {
       });
       $('#Paper2').on('click', function (e) {
         antRPS.YourGame.iGameState = 3;
+        antRPS.YourGame.bGameOver=true;
         antRPS.YourPlayer.Weapon = "Paper";        
         antRPS.YourPlayer.bRequiresUpdate = true;
         antRPS.YourGame.bRequiresUpdate = true;
@@ -328,7 +330,8 @@ var antRPS = {
       });
       $('#Scissor2').on('click', function (e) {
         antRPS.YourPlayer.Weapon = "Scissor";
-        antRPS.YourGame.iGameState = 3;        
+        antRPS.YourGame.iGameState = 3;
+        antRPS.YourGame.bGameOver=true;        
         antRPS.YourPlayer.bRequiresUpdate = true;
         antRPS.YourGame.bRequiresUpdate = true;
       });
@@ -406,6 +409,11 @@ var antRPS = {
 
   },
   WhoWon: function () {
+    if (antRPS.YourGame.Player1.Weapon === antRPS.YourGame.Player2.Weapon) {        
+      return antRPS.HandleTie();      
+      
+      return 'The Game was a Tie!';      
+    }
     if(antRPS.YourGame.Player1.Weapon ==='TimeOut'){
       return antRPS.HandleWinLoss(antRPS.YourGame.Player2, antRPS.YourGame.Player1);
       
@@ -414,21 +422,7 @@ var antRPS = {
       return antRPS.HandleWinLoss(antRPS.YourGame.Player1, antRPS.YourGame.Player2);
       
     };
-    if (antRPS.YourGame.Player1.Weapon === antRPS.YourGame.Player2.Weapon) {
-      // //if (!antRPS.YourGame.bGameOver) {
-      // if(antRPS.YourPlayer.FieldSide!=='none'){
-                
-      //   antRPS.YourPlayer.Games=+1;
-      //   antRPS.YourPlayer.bRequiresUpdate = true;
-      //   antRPS.YourGame.bRequiresUpdate = true;
-        antRPS.YourGame.bGameOver=true;
-        antRPS.YourGame.bRequiresUpdate = true;        
-        return 'The Game was a Tie!';
-      // }
-      
-      
-   // }
-    }
+    
     let slt = antRPS.YourGame.Player1.Weapon + ':' + antRPS.YourGame.Player2.Weapon;
     switch (slt) {
       case 'Rock:Paper':
@@ -453,21 +447,39 @@ var antRPS = {
     }
 
   },
+  HandleTie: function(){
+    let d = new Date();
+    if (antRPS.YourGame.bGameOver) {
+      
+      if (antRPS.YourPlayer.id === antRPS.YourGame.Player1.id||antRPS.YourPlayer.id === antRPS.YourGame.Player2.id) {
+        antRPS.YourPlayer.Games += 1;
+        
+      }
+      antRPS.YourGame.gotime=d.getTime();      
+      antRPS.YourPlayer.bRequiresUpdate=true;
+      antRPS.YourGame.bRequiresUpdate=true;
+      antRPS.YourGame.bGameOver = false;
+    }
+    antRPS.YourPlayer.bRequiresUpdate=true;
+    antRPS.YourGame.bRequiresUpdate=true;    
+    return 'Game is a Tie!';
+  },
   HandleWinLoss: function (winner, loser) {
     let d = new Date();
-    if (!antRPS.YourGame.bGameOver) {
-      antRPS.YourPlayer.Games += 1;
+    if (antRPS.YourGame.bGameOver) {
+      
       if (antRPS.YourPlayer.id === winner.id) {
+        antRPS.YourPlayer.Games += 1;
         antRPS.YourPlayer.Wins += 1;
       }
       if (antRPS.YourPlayer.id === loser.id) {
+        antRPS.YourPlayer.Games += 1;
         antRPS.YourPlayer.Losses += 1;
       }
-      antRPS.YourGame.gotime=d.getTime();
-      antRPS.YourGame.bGameOver=true;
+      antRPS.YourGame.gotime=d.getTime();      
       antRPS.YourPlayer.bRequiresUpdate=true;
       antRPS.YourGame.bRequiresUpdate=true;
-      
+      antRPS.YourGame.bGameOver = false;
     }
 
 

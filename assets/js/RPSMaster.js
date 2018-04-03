@@ -284,12 +284,19 @@ var antRPS = {
 
 
       antRPS.bStart = false;
+      $('#chat').on('keyup',function (e) {
+        if (e.key === 'Enter') {
+          if ($('#chat').val().length > 0) {
+            antRPS.Chat(e);
+      }}});   
+      
       $('#Join').on('click', function (e) {
         antRPS.JoinGame();
       });
       $('#About').on('click', function (e) {
 
-      })
+      });
+
       $('#getName').on('keyup', function (e) {
         if (e.key === 'Enter') {
           if ($('#getName').val().length > 0) {
@@ -350,8 +357,20 @@ var antRPS = {
       });
     }
   },
+  Chat: function(e){
+    if(!antRPS.YourGame.chat){antRPS.YourGame.chat=''};
+   
+    antRPS.YourGame.chat = antRPS.YourGame.chat.slice(0,300);
+    antRPS.YourGame.chat = "<p> " + antRPS.YourPlayer.Name + ' : ' + $('#chat').val() + " </p>" + antRPS.YourGame.chat;    
+    
+    
+    $('#chat').val('');
+    antRPS.YourGame.bRequiresUpdate=true;
+    antRPS.UpdateData();
+  },
   DisplayView: function () {
     //Set PlayerNames
+    $('#bad').html(antRPS.YourGame.chat);
     $('#Player1Name').text(antRPS.YourGame.Player1.Name);
     $('#Player2Name').text(antRPS.YourGame.Player2.Name);
     $('#Player1contain').hide();
@@ -359,7 +378,7 @@ var antRPS = {
     $('#MyData').hide();
     $('#MyData').empty();
     if(antRPS.YourPlayer.Name!=='NewPlayer'){
-        
+
         $('#MyData').append($('<p>').text('Your Player Data'));
         $('#MyData').append($('<p>').text('Name: ' + antRPS.YourPlayer.Name));
         $('#MyData').append($('<p>').text('Wins: ' + antRPS.YourPlayer.Wins));

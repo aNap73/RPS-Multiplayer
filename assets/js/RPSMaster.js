@@ -111,6 +111,8 @@ var antRPS = {
     }else{
       antRPS.YourGame.Player2 = new antPlayer('Player2');
     }
+    antRPS.YourGame.iGameState=3;
+    antRPS.YourGame.bGameOver=true;    
     antRPS.YourPlayer.FieldSide = 'none';
     antRPS.UpdateData();
     antRPS.DisplayView();
@@ -294,7 +296,7 @@ var antRPS = {
         antRPS.JoinGame();
       });
       $('#About').on('click', function (e) {
-
+        antRPS.About();
       });
 
       $('#getName').on('keyup', function (e) {
@@ -356,6 +358,10 @@ var antRPS = {
         antRPS.YourGame.bRequiresUpdate = true;
       });
     }
+  },
+  About:function(){
+    $('#Arena').empty();
+    $('#Arena').append($('<p>').text('This project was written by A.Napolitano, as an attempt at a multiplayer game online.  It features a Rock Paper Scissors Game that can be Joined or Left at will, and a chat hangout.'));
   },
   Chat: function(e){
     if(!antRPS.YourGame.chat){antRPS.YourGame.chat=''};

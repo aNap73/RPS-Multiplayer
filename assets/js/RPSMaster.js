@@ -1,3 +1,5 @@
+//a.Nap This was hard. 4/2/2018
+
 var constMaxTime = 10000;
 var config = {
   apiKey: "AIzaSyAI6iCZkMKh_VRJGL5h8tsWdNu55ejG_pA",
@@ -122,6 +124,7 @@ var antRPS = {
     
     antRPS.YourGame.isReal = true;
     antRPS.YourGame.bRequiresUpdate = true;
+    $('#MyData').show();
     return inPlayer;
   },
 
@@ -309,6 +312,17 @@ var antRPS = {
     $('#Player2Name').text(antRPS.YourGame.Player2.Name);
     $('#Player1contain').hide();
     $('#Player2contain').hide();
+    $('#MyData').hide();
+    $('#MyData').empty();
+    if(antRPS.YourPlayer.Name!=='NewPlayer'){
+        
+        $('#MyData').append($('<p>').text('Your Player Data'));
+        $('#MyData').append($('<p>').text('Name: ' + antRPS.YourPlayer.Name ));
+        $('#MyData').append($('<p>').text('Wins: ' + antRPS.YourPlayer.Wins));
+        $('#MyData').append($('<p>').text('Loses: ' + antRPS.YourPlayer.Losses));
+        $('#MyData').append($('<p>').text('Games: ' + antRPS.YourPlayer.Games));
+        $('#MyData').show();
+    }
     $('#Arena').empty();
     switch (antRPS.YourGame.iGameState) {
       case 0:

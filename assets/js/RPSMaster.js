@@ -164,7 +164,7 @@ var antRPS = {
     {    
       antRPS.YourGame.gotime=d.getTime();
       antRPS.YourGame.bRequiresUpdate = true;
-    }else if(antRPS.YourGame.iGameState===3&&(Math.abs(d.getTime() - antRPS.YourGame.gotime)>5000))
+    }else if(antRPS.YourGame.iGameState===3&&(Math.abs(d.getTime() - antRPS.YourGame.gotime)>300))
     {      
       antRPS.YourGame.iGameState=0;
       antRPS.YourGame.gotime=0;

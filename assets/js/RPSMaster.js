@@ -72,6 +72,10 @@ var antRPS = {
   UpdatePlayer: function (inPlayer) {
     if(inPlayer.id !== antRPS.YourGame.Player1.id&&inPlayer.id !== antRPS.YourGame.Player2.id){
       return};
+      if(inPlayer.id === antRPS.YourGame.Player1.id&&antRPS.YourGame.iGameState===1){
+      return};  
+      if(inPlayer.id === antRPS.YourGame.Player2.id&&antRPS.YourGame.iGameState===2){
+        return};
     let d3 = new Date();
     if (Math.abs(d3.getTime() - inPlayer.LastUpdate) > 2000) {
       inPlayer.LastUpdate = d3.getTime();
@@ -101,9 +105,22 @@ var antRPS = {
     return ImOld;
   },
 
-
+  Leave: function (inPlayer) {
+    if(antRPS.YourPlayer.FieldSide==='Player1'){
+      antRPS.YourGame.Player1 = new antPlayer('Player1');
+    }else{
+      antRPS.YourGame.Player2 = new antPlayer('Player2');
+    }
+    antRPS.YourPlayer.FieldSide = 'none';
+    antRPS.UpdateData();
+    antRPS.DisplayView();
+    $('#Join').text('Join');
+  },
   Join: function (inPlayer) {
-
+    if($('#Join').text()==='Leave'){
+      antRPS.Leave(inPlayer);
+      return;
+    }
     //Must be "Real" to join
     
     if (!antRPS.isRealPlayer(inPlayer)) {
@@ -130,7 +147,7 @@ var antRPS = {
       antRPS.YourGame.Player2.FieldSide = "Player2";      
       antRPS.YourGame.bRequiresUpdate = true;
     }
-    
+    $('#Join').text('Leave');
     antRPS.YourGame.isReal = true;
     antRPS.YourGame.bRequiresUpdate = true;
     $('#MyData').show();
@@ -155,6 +172,8 @@ var antRPS = {
       antRPS.YourGame.iGameState=3;
       antRPS.YourGame.bGameOver=true;
       antRPS.YourGame.gotime=d.getTime();
+
+    
       antRPS.YourGame.winner= antRPS.YourGame.Player2;
       antRPS.YourGame.loser= antRPS.YourGame.Player1;
       antRPS.YourGame.bRequiresUpdate = true;     
@@ -177,7 +196,7 @@ var antRPS = {
     {      
       antRPS.YourGame.iGameState=0;
       antRPS.YourGame.gotime=0;
-      
+      antRPS.Cycle();  
       antRPS.StartGame();
       antRPS.UpdateData();
       antRPS.DisplayView();
@@ -224,16 +243,10 @@ var antRPS = {
       $('#getName').focus();
       return;
     }
-    if (!antRPS.Join(antRPS.YourPlayer)) {
-      return;
-    }
-
-
     let hPlayer = antRPS.YourPlayer;
     antRPS.YourPlayer = antRPS.Join(antRPS.YourPlayer);
     if (!antRPS.YourPlayer) {
       antRPS.YourPlayer = hPlayer;
-      return;
     }
     antRPS.YourGame.bRequiresUpdate = true;
 
